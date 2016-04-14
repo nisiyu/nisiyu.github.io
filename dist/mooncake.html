@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <title>没想到你是这种月饼！</title>
+    <link rel="stylesheet" href="css/main.css"  />
+</head>
+<body>
+    <div class="content">
+    <div class="head_nav">
+        <div class="nav_left">
+            <!--<img src="img/back.png" id="last_step"/>-->
+            <a href="#">上一步</a>
+        </div>
+        <div class="nav_right">
+            <!--<img src="img/close.png" id="close"/>-->
+            <a href="#">关闭</a>
+        </div>
+    </div>
+    <div class="test_result">
+        <h3>大胃王月饼</h3>
+        <div class="result_pic">
+            <img src="img/pic_moon_good@2x.png" id="moon"/>
+            <img src="img/pic_foodie@2x.png" id="mooncake"/>
+            <img src="img/pic_light@2x.png" id="light"/>
+        </div>
+        <p id="description">
+            从小你就要做一个能吃苦的人，无奈只做到了能吃。不开心睡一觉，伤心还好，伤胃就不好了，你对吃的执着催人泪下，撼天动地，大胃王月饼肥腻莫索啊！
+        </p>
+
+    </div>
+    <div class="interaction">
+
+            <input type="button" value="拉仇恨" />
+
+        <img src="img/btn_gift@2x.png" id="present" onclick="gift.popup();"/>
+
+    </div>
+        <div class="mask">
+
+        </div>
+    <div class="present_dialog">
+        <img id="close" src="img/btn_close@2x.png" onclick="gift.close();"/>
+        <div id="gift_pic"><img id="lantern" src="img/pic_festival@2x.png"/></div>
+        <div>
+            <p>
+        哈哈，中秋佳节怎么能没好礼相赠呢？来，快把中秋学习大礼包拿回家。
+    </p>
+            </div>
+
+        <div class="btn_group">
+            <input type="button" class="btn_left" value="已领" />
+            <input type="button" class="btn_right" value="领取" />
+        </div>
+    </div>
+
+    </div>
+    <script src="js/remadjust.js"></script>
+    <script src="js/zepto.min.js"></script>
+    <script src="js/present.js"></script>
+</body>
+</html>
