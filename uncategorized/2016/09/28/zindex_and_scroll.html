@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>倪思宇的小黄鸭</title>
-  <meta name="description" content="Do something fun!">
+  <title>那些年玩前端遇到的坑们（一）z-index不是很好玩，z-index和事件触发机制往往不会像你想象的顺利。</title>
+  <meta name="description" content="今天我决定来讲讲一些具体的问题。上班到了第二个月，感觉工作压力和强度也不算很大，但是遇到了很多&amp;ldquo;名为经验&amp;rdquo;的小知识和小习惯。 今天讲的故事是这样的，我现在有一个页面，想做一个渐渐浮现起来的全局菜单， 菜单浮现前的css属性为 z-index: -1; overflow:scroll; //...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/404.html">
+  <link rel="canonical" href="/uncategorized/2016/09/28/zindex_and_scroll.html">
   <link rel="alternate" type="application/rss+xml" title="倪思宇的小黄鸭" href="/feed.xml">
   
   
@@ -67,26 +67,56 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-<div class="container">
-  <h1>404</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">那些年玩前端遇到的坑们（一）z-index不是很好玩，z-index和事件触发机制往往不会像你想象的顺利。</h1>
+    <p class="post-meta">
+      <time datetime="2016-09-28T16:54:34+08:00" itemprop="datePublished">
+        
+        Sep 28, 2016
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{"display_name"=>"nisiyu", "login"=>"nisiyu", "email"=>"nisiyu91@sina.com", "url"=>""}</span></span>
+      </p>
+  </header>
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+  <div class="post-content" itemprop="articleBody">
+    <p>今天我决定来讲讲一些具体的问题。上班到了第二个月，感觉工作压力和强度也不算很大，但是遇到了很多&ldquo;名为经验&rdquo;的小知识和小习惯。</p>
+<p>今天讲的故事是这样的，我现在有一个页面，想做一个渐渐浮现起来的全局菜单，</p>
+<ul>
+<li>菜单浮现前的css属性为</li>
+</ul>
+<p><code><br />
+z-index: -1;<br />
+overflow:scroll; //因为菜单可能内容会多，这样可以滚屏下去找<br />
+opacity: 0;<br />
+</code></p>
+<ul>
+<li>点击菜单按钮后，更新的css属性为</li>
+</ul>
+<p><code><br />
+z-index: 999;//一个很高的值，覆盖所有<br />
+opacity: 1; //可以添加个transition，有种渐渐浮现的效果。<br />
+</code></p>
+<ul>
+<li>html结构大致是这样</li>
+</ul>
+<p><code></p>
+<div class="menu"></div>
+<div class="main"></div>
+<p></code></p>
+<p>问题来了，突然发现，在android上一切正常，而在iOS上出现了页面无法滚动的问题，或者觉得滚得很不顺。（我没有iPhone。。。别人发现的）</p>
+<p>我探索了好久才发现可能跟菜单有关系，因为我先滑动一下屏幕，页面没有动静，但是点开菜单，里面的内容却是已经滑动过的了。</p>
+<p>后来将点击按钮前的菜单的overflow属性先设置成hidden，等到浮现后才打开scroll，果然没有了这个问题。</p>
+<p>出现这个问题是因为我想当然以为scroll这个动作会在鼠标区域中的z-index最高的部分先进行，结果iOS中可能是从文档顺序较前或者较高的位置进行触发的，所以先触发了z-index较低位置的事件。</p>
+<p>所以除了z-index和滚动需要警惕之外，还有一点是，最好就是尽就避免用z-index做这个效果，不出现的内容就把高度宽度降到0，这样就算是overflow:scroll的一个元素，鼠标或者接触点发生scroll的位置根本不会影响到这个元素。</p>
+<p>上述的问题真实存在，原因纯属猜测，没有经过仔细求证，敬请指正。</p>
+
+  </div>
+
+  
+</article>
 
       </div>
     </main>

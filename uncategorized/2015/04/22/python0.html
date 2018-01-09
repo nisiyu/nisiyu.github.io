@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>倪思宇的小黄鸭</title>
-  <meta name="description" content="Do something fun!">
+  <title>python官方文档读书笔记[0] enumerate map with...open</title>
+  <meta name="description" content="根据之前定的计划，开始水一些小笔记，主要是为了给自己看，不是做教程，所以只选取一些以前不太了解的小知识。 代码高亮插件待配置 目前python官方文档扫了一遍Tutorial，然后开始看Standard Library built-in functions篇，有些以前不太熟但是感觉很有用的用法。 enumerat...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/404.html">
+  <link rel="canonical" href="/uncategorized/2015/04/22/python0.html">
   <link rel="alternate" type="application/rss+xml" title="倪思宇的小黄鸭" href="/feed.xml">
   
   
@@ -67,26 +67,68 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-<div class="container">
-  <h1>404</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">python官方文档读书笔记[0] enumerate map with...open</h1>
+    <p class="post-meta">
+      <time datetime="2015-04-22T14:35:04+08:00" itemprop="datePublished">
+        
+        Apr 22, 2015
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{"display_name"=>"nisiyu", "login"=>"nisiyu", "email"=>"nisiyu91@sina.com", "url"=>""}</span></span>
+      </p>
+  </header>
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+  <div class="post-content" itemprop="articleBody">
+    <p>根据之前定的计划，开始水一些小笔记，主要是为了给自己看，不是做教程，所以只选取一些以前不太了解的小知识。</p>
+<p>代码高亮插件待配置</p>
+<p>目前python官方文档扫了一遍Tutorial，然后开始看Standard Library built-in functions篇，有些以前不太熟但是感觉很有用的用法。</p>
+<ul>
+<li>enumerate()函数 同时遍历元素和索引值</li>
+</ul>
+<p>当我们遍历一个序列时，如果需要用到每一个元素的值时，习惯上会这么写：<br />
+[code lang="python"]<br />
+>>> lst = [10,20,30,40]<br />
+>>> for elem in lst:<br />
+        ...<br />
+[/code]</p>
+<p>当需要同时用到每一个iterator以及它的索引值时，就可以使用到enumerate()函数，将序列作为其参数，可以在每个iterator中产生(索引号，元素值）的元组，用法如下：<br />
+[code lang="python"]<br />
+>>> lst = [10,20,30,40]<br />
+>>> for i, elem in enumerate(lst):<br />
+        ...<br />
+[/code]</p>
+<ul>
+<li>map()函数用法 将一个或多个序列中的元素批量进行修改转化成新的序列B</li>
+</ul>
+<p>map(func,seq1[,seq2...])</p>
+<p>第一个参数func为一个函数对象，这个函数将运用在后续的seq1,seq2...中，map函数将会遍历计算return_value[i] = func(seq1[i],seq2[i],...) 形成一个新的序列。</p>
+<p>通常会与lambda表达式一起使用，会使得程序代码量变得十分简洁。</p>
+<p>举个例子吧：一个序列中全是整数，我想将这个序列的值全都乘以2<br />
+[code lang="python"]<br />
+>>> l = [5, 10, 15, 30]<br />
+>>> map(lambda x:x*2, l)<br />
+[10, 20, 30, 60]<br />
+[/code]</p>
+<ul>
+<li>with...open，一个资源释放方便的文件读写方式</li>
+</ul>
+<p>一般在文件读写时python要使用open函数，然后进行读或写，还要记得使用close函数释放文件句柄，当大量文件句柄忘记释放，则会造成程序异常，资源耗尽的现象。</p>
+<p>with...open实际上将一个文件的读写集中在一个try block中，并且当with...open语句结束后，文件句柄自然被释放，是一个较为安全、简洁的写法。</p>
+<p>例子：<br />
+[code lang="python"]<br />
+>>> with open('workfile', 'r') as f:<br />
+... read_data = f.read()<br />
+>>> f.closed<br />
+True<br />
+[/code]</p>
+
+  </div>
+
+  
+</article>
 
       </div>
     </main>

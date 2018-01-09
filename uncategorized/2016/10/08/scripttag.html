@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>那些年玩前端遇到的坑们（二）&lt;/script&gt;有着尊贵至高的身份，标签中定义字符串要小心。</title>
+  <meta name="description" content="公司的产品是一个建站工具，可以用它搭建电商网站，自然建站工具里面会出现很多的表单。我们都知道表单验证后，一般来说输入要校验，输出要编码，来维持数据的合法性。 现在我们的产品会读取用户的输入，将其作为一个javascript的字符串的变量的一部分，例如我们的代码中就会出现这样的代码段： 其中userinput是一个...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="/uncategorized/2016/10/08/scripttag.html">
+  <link rel="alternate" type="application/rss+xml" title="倪思宇的小黄鸭" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">倪思宇的小黄鸭</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About me</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">那些年玩前端遇到的坑们（二）&lt;/script&gt;有着尊贵至高的身份，标签中定义字符串要小心。</h1>
+    <p class="post-meta">
+      <time datetime="2016-10-08T16:23:25+08:00" itemprop="datePublished">
+        
+        Oct 8, 2016
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{"display_name"=>"nisiyu", "login"=>"nisiyu", "email"=>"nisiyu91@sina.com", "url"=>""}</span></span>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>公司的产品是一个建站工具，可以用它搭建电商网站，自然建站工具里面会出现很多的表单。我们都知道表单验证后，一般来说输入要校验，输出要编码，来维持数据的合法性。</p>
+<p>现在我们的产品会读取用户的输入，将其作为一个javascript的字符串的变量的一部分，例如我们的代码中就会出现这样的代码段：<br />
+<code><br />
+<script><br />
+var data = "userinput";<br />
+</script><br />
+</code></p>
+<p>其中userinput是一个用户输入的字符串，<strong>初想觉得</strong>只要将字符串得到合适的转义，例如"转为\"，<strong>直接将用户输入转为一个字符串即可</strong>。</p>
+<ul>
+<li>问题现象</li>
+</ul>
+<p>然而，发生了意外，当我输入一些字符串进去时发现页面异常了，控制台也报出了很多错误。排查原因，发现是<strong>因为字符串中有</script></strong>。可以输入载荷</script><script>alert(1);</script>造成页面存储型xss。</p>
+<p>到如今，这个问题已经和转不转义没有关系了，甚至和javascript也关系不大，而在于浏览器的html引擎在读取到字符串中的</script>，直接闭合了script标签，没有继续读下去将其作为一个字符串。</p>
+<ul>
+<li></script>为什么那么特殊？</li>
+</ul>
+<p>初看觉得不可思议，但是仔细想想是非常合理的，浏览器读取了一串html，会要将已知的javascript代码读取出来用javascript引擎做处理，就要提取所有script标签，因此</script>标签解析的优先级非常高，根本等不到javascript引擎去分析整个字符串。</p>
+<ul>
+<li>解决方法</li>
+</ul>
+<p>有趣的是，这问题只出现于html中，所以我们用script标签引用外部文件时，不会出现问题，字符串中可以包含有 </script>这样的字符串。</p>
+<p>但我们需要动态地写字符串在这个html中，所以不能引用外部文件。最终我们选择的方案是将用户输入先做一层base64编码，然后在script标签中执行base64解码函数，还原出用户输入字符串，这样就可以避免硬写包含</script>字符串，但字符串的值又可以含有</script>不会使标签内容被截断。</p>
+<p>还有一个坑就是，不要转成JSON字符串，出现中文有可能出现不支持的情况，不要问我怎么知道的。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">倪思宇的小黄鸭</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              倪思宇的小黄鸭
+            
+            </li>
+            
+            <li><a href="mailto:nisiyu91@sina.com">nisiyu91@sina.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/nisiyu91"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">nisiyu91</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Do something fun!</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

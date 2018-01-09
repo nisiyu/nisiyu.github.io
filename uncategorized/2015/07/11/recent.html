@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>最近的二三事20150711</title>
+  <meta name="description" content="最近也很久没更新博客了，稍稍更新一下。 0x00 之前去听了geekpwn公开课第三期的分享会，见到了一些技术牛人，似乎看到了真正的安全界的圈子。主办方keen team让人膜拜得五体投地，做分享的flanker是94年的，前一年获得pwn2own冠军也是我交同届的，我在起跑线上已经被甩了十万八千里了。。。 0x...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="/uncategorized/2015/07/11/recent.html">
+  <link rel="alternate" type="application/rss+xml" title="倪思宇的小黄鸭" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">倪思宇的小黄鸭</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About me</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">最近的二三事20150711</h1>
+    <p class="post-meta">
+      <time datetime="2015-07-11T16:06:06+08:00" itemprop="datePublished">
+        
+        Jul 11, 2015
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{"display_name"=>"nisiyu", "login"=>"nisiyu", "email"=>"nisiyu91@sina.com", "url"=>""}</span></span>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>最近也很久没更新博客了，稍稍更新一下。</p>
+<p>0x00</p>
+<p>之前去听了geekpwn公开课第三期的分享会，见到了一些技术牛人，似乎看到了真正的安全界的圈子。主办方keen team让人膜拜得五体投地，做分享的flanker是94年的，前一年获得pwn2own冠军也是我交同届的，我在起跑线上已经被甩了十万八千里了。。。</p>
+<p>0x01</p>
+<p>最近为了准备我厂的安全技术大赛，做了些CTF的题目，CTF就是capture the flag，跟安全技术相关，通常有编程，解密，逆向，隐写等题目，就如有名的东大计算机系研究生入学题可以算CTF题的一种。</p>
+<p>做了些网站上的练习了以后自然觉得要不就是题目太水，要不就是智商被压制，很难有棋逢对手的那种感觉，然后渐渐领会到了一些CTF问题的坑爹本质，很自然，考试题与现实中的安全渗透还是有十分大的区别的。</p>
+<p>什么是CTF的坑爹之处呢？下面让我来举个例子：</p>
+<p>题目来源：<a href="http://ctf5.simplexue.com/qwctf/1.html">http://ctf5.simplexue.com/qwctf/1.html</a></p>
+<p>Os drnuzearyuwn, y jtkjzoztzoes douwlr oj y ilzwex eq lsdexosa kn pwodw tsozj eq ufyoszlbz yrl rlufydlx pozw douwlrzlbz, ydderxosa ze y rlatfyr jnjzli; mjy gfbmw vla xy wbfnsy symmyew (mjy vrwm qrvvrf), hlbew rd symmyew, mebhsymw rd symmyew, vbomgeyw rd mjy lxrzy, lfk wr dremj. Mjy eyqybzye kyqbhjyew mjy myom xa hyedrevbfn lf bfzyewy wgxwmbmgmbrf. Wr mjy dsln bw f1_2jyf-k3_jg1-vb-vl_l</p>
+<p>对上述这段文字进行解密，可以，看到mjy这个字出现了很多次，所以根据词频猜测是单对单的置换密码，mjy表示the。（千万别问我这是怎么一眼看穿的，我也不知道）</p>
+<p>于是我想试着替换一下，但是看到了第一行中，y这个字母会替换成e的话，就不对了，英文中e不会单独以一个词出现啊？于是我就在想是不是有单对多或者 多对多的关系。。。然后想了一个下午，没有想到。</p>
+<p>后来我在网上搜到一个博客说了这题的解法，来源请点<a href="http://www.idbg.net/archives/215.html">紫诺的博客</a></p>
+<p>还是用了替换密码，到了一个网站去强行破解了一发，答案是：</p>
+<p><a href="http://198.56.183.237/wp-content/uploads/2015/07/2015062606483573.png"><img class="alignnone size-full wp-image-47" src="http://198.56.183.237/wp-content/uploads/2015/07/2015062606483573.png" alt="2015062606483573" width="1058" height="493" /></a></p>
+<p>&nbsp;</p>
+<p>what the fuck?!原来他妈的前一半就是纯坑爹的，来干扰人的思路。不得不想起东大的那些入学题，因为通常如果比较难的解密隐写的题目，正确的解题方法通常可以规为这样一个步骤：</p>
+<p><img class="alignnone size-full wp-image-49" src="http://198.56.183.237/wp-content/uploads/2015/07/pic0.png" alt="pic0" width="574" height="117" /></p>
+<p>&ldquo;解出一轮密文后，我能否判断这个密文的思路是不是对的？&ldquo;就成了一个很大的问题。人的思路通常也是深度优先和广度优先相结合的，首先拿到一道题时大家肯定会开始开脑洞，得出潜在的n个算法0，然后分别检测得出来的密文1是否有解出答案的可能性，</p>
+<p>(1)判断密文1是对的密文1（算法0正确），则以密文1为一道新题开始做。</p>
+<p>(2)判断密文1是错误的，那剪枝，回到上一状态选择下一个算法0。</p>
+<p>如果正确答案的密文1非常模糊，造成了判断错误，那对解题是一个致命打击，比如每一次选算法去解时有n种解法，按照上图显示可能多耗费的时间就是n的3次方级别的，也可能直接影响这道题做不做得出来。。。</p>
+<p>0x02</p>
+<p>以上这些，也有可能是我太弱了所以这样想。想象一下安全研究人员真正在研究某样系统存不存在某漏洞时，如果把它看成是一道题的时候，很有可能是没有答案的。（我就是没这个漏洞，你咬我呀？）</p>
+<p>所以要不断地try and error，不光要try and error，因为有时error并不是真正的error，可能只是自己的评估方式有问题，而不是之前没有得出期望的结果。</p>
+<p>说得比较拗口希望看到的人能懂。</p>
+<p>我很希望有一个mentor能在我评估方式可能有问题，在自己解出的密文1该放弃还是该继续尝试时，给我点正面或负面的鼓励，但是现在我从事岗位的环境中，没有，前路一片漆黑。</p>
+<p>之前有人说，我厂平台很大能给人很大的帮助，但是我似乎只感受到了大平台的信息传递慢，协作困难。我不否认技术主要靠自己，我也搞不清我到底是个平庸的人？还是要干票大事业的人？ 只是希望，以后能加入个更有活力，少点限制的小型geek团队啊。我还是</p>
+<p>希望自己能以技术为导向，而不用一些吹牛手段和trick来提高自己的KPI，光为了一个数据而不是做真才实干，我是会越来越瞧不起自己的。</p>
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">倪思宇的小黄鸭</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              倪思宇的小黄鸭
+            
+            </li>
+            
+            <li><a href="mailto:nisiyu91@sina.com">nisiyu91@sina.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/nisiyu91"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">nisiyu91</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Do something fun!</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

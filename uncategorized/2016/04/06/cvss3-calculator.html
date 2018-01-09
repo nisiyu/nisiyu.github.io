@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>倪思宇的小黄鸭</title>
-  <meta name="description" content="Do something fun!">
+  <title>CVSS3 calculator 关于CVSS3和CVSS2的区别</title>
+  <meta name="description" content="最近在学习前端的一些技术，自己瞎做点东西。之前看到了个CVSS3，感觉公式还是挺复杂的，于是想做个动态的计算器，也算进行一点交互的小练习，链接在下方。（只有基础分） www.nisiyu.com/CVSS/calc.html CVSS全称是Common Vulnerability Scoring System的缩...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/404.html">
+  <link rel="canonical" href="/uncategorized/2016/04/06/cvss3-calculator.html">
   <link rel="alternate" type="application/rss+xml" title="倪思宇的小黄鸭" href="/feed.xml">
   
   
@@ -67,26 +67,39 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-<div class="container">
-  <h1>404</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">CVSS3 calculator 关于CVSS3和CVSS2的区别</h1>
+    <p class="post-meta">
+      <time datetime="2016-04-06T15:18:42+08:00" itemprop="datePublished">
+        
+        Apr 6, 2016
+      </time>
+      
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{"display_name"=>"nisiyu", "login"=>"nisiyu", "email"=>"nisiyu91@sina.com", "url"=>""}</span></span>
+      </p>
+  </header>
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+  <div class="post-content" itemprop="articleBody">
+    <p>最近在学习前端的一些技术，自己瞎做点东西。之前看到了个CVSS3，感觉公式还是挺复杂的，于是想做个动态的计算器，也算进行一点交互的小练习，链接在下方。（只有基础分）</p>
+<p><a href="http://www.nisiyu.com/CVSS/calc.html">www.nisiyu.com/CVSS/calc.html</a></p>
+<p>CVSS全称是Common Vulnerability Scoring System的缩写，用CVSS的评分通常能够衡量一个漏洞的严重程度。</p>
+<p>因为一开始查CVSS时都没有料到是CVSS3，因为平时工作上用到的都是CVSS2的打分，然后发现新增加了2项，挺有意思。这里我主要关注的是基础分。</p>
+<p>CVSS3相比CVSS2明显的区别：</p>
+<p>新出了2个维度，</p>
+<p>利用维度中多了个UI user interaction维度，评价攻击者若要利用的话是否有一个正常用户正在执行操作，比如CSRF漏洞，通常需要别人点击一个钓鱼链接;比如有些漏洞只在系统更新时或者安装时才能利用，安装完毕后不能利用等，都是解决原来没有这个维度的情况。</p>
+<p>单独多出了个新的维度 S Scope，评价了攻击者在使用这个漏洞时能否达成域的变迁，我认为这里应该是面对的是越来越多的虚拟化云化的产品，有些比如从虚拟机中系统调用实现中的漏洞可以使攻击者达成横向越权纵向越权，实现虚拟机逃逸，都可以算作是Scope Changed，比Scope Unchanged的情况更加严重。</p>
+<p>至于还有什么具体的，还是直接扔原文链接吧，不误导人：</p>
+<p><a href="https://www.first.org/cvss">https://www.first.org/cvss</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+  </div>
+
+  
+</article>
 
       </div>
     </main>
