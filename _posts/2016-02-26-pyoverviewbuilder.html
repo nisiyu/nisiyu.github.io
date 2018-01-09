@@ -1,0 +1,52 @@
+---
+layout: post
+status: publish
+published: true
+title: py全景图生成器开发感想
+author:
+  display_name: nisiyu
+  login: nisiyu
+  email: nisiyu91@sina.com
+  url: ''
+author_login: nisiyu
+author_email: nisiyu91@sina.com
+wordpress_id: 80
+wordpress_url: http://198.56.183.237/?p=80
+date: '2016-02-26 16:23:44 +0800'
+date_gmt: '2016-02-26 16:23:44 +0800'
+categories:
+- Uncategorized
+tags:
+- List Generation
+- PIL
+comments: []
+---
+<p>说点背景：由于厂里有时候要做些PPT，喜欢把一件事涉及到的各种元素揉在一起放个图，那天我看到一个同事，做了一张很大的图，我问他这样的图有没有模板可以自动生成，回答没有，是一个个拖的。这时我就想做一个自动生成类似全景图的内容，也算是在平时做做toy project练练手。</p>
+<p>项目地址：</p>
+<p><a href="https://github.com/nisiyu/overviewPictureBuilder">https://github.com/nisiyu/overviewPictureBuilder</a></p>
+<p>先上个示例图，当然了，觉得丑的话很正常，目前起码实现了自动排版的方法：</p>
+<p><a href="http://198.56.183.237/wp-content/uploads/2016/02/output.png"><img class="alignnone size-full wp-image-81" src="http://198.56.183.237/wp-content/uploads/2016/02/output.png" alt="output" width="830" height="339" /></a>主要还是说说几点感受：</p>
+<p>1. 评价一下现在做的成果，跑起来了，但是比较粗糙，还是有很多可以优化的地方。现在我设计的一套格式如果想改变样式会非常麻烦，还要进python脚本修改函数的参数。而且在程序编写时发现与一开始想的会有出入，就临时推倒了一开始的想法。于是该功能的定位和思路就变得很奇怪。而且因为只有自己写，想改就改，随心所欲，在真实项目环境中应该是大忌。</p>
+<p>2. 感觉如果遇到问题用中文进行搜索的话，会很难搜索到想要的答案。可能是百度的锅，也有可能找答案的方式和输入的语句不专业，比如我形容一个页面的XXX动作，外行跟内行描述的语汇会不一样，专业的语汇更有可能找到哦专业的答案。在这个项目中我是用了PIL模块，因为要自动排版，我需要在绘制字之前计算字的高度和宽度，但是搜相关关键字加&ldquo;宽度 高度&rdquo;这类都很难搜到，最后还是求助了官方文档，有一个textsize的API。同时源代码中也有相应的API。</p>
+<p>3. 熟练化一些Python语法特性，List Generation 是一个比较具有python特点的内容。</p>
+<p>当我想要进行一个多维序列的一个初始化，我一开始运行了第一行的代码，发现无法正常运行，发现乘法符号只是浅拷贝[[]]中[]元素，相当于把引用复制了3次，放在序列list1中，后来改用了List Generation的方式，感觉其实和之前介绍的map函数的作用比较相似，每次都生成一个全新的空序列，而且如果[] for i in range(3)是由圆括号包裹的，则是一个generator，不会立即求值，而会在迭代过程中求值，和序列有所不同。<br />
+[code lang="python"]<br />
+# list1 is shallow copy if I changed list1[0], list[1] list[2]will always change<br />
+list1 = [[]]*3<br />
+list2 = [[] for i in range(3)]<br />
+list1[0].append(1)<br />
+list2[0].append(1)<br />
+print 'list1', list1<br />
+print 'list2', list2</p>
+<p># the following is print result<br />
+list1 [[1], [1], [1]]<br />
+list2 [[1], [], []]</p>
+<p># the following is a generator<br />
+generator = ([] for i in range(3))</p>
+<p>[/code]</p>
+<p>个人理解这里也是给程序员一种快捷的编写方式能够更加便利地通过一个序列生成另外一个序列，不过它也有不是一一对应的，和map函数有所不同，序列生成可以增加条件，如下代码就计算了0-9序列中序列中元素的平方小于50的序列，就将原来的序列的部分映射出来了。</p>
+<p>[code lang="python"]<br />
+# list generation with condition<br />
+print [i for i in range(10) if i*i < 50]</p>
+<p>[0, 1, 2, 3, 4, 5, 6, 7]<br />
+[/code]</p>

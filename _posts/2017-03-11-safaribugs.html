@@ -1,0 +1,41 @@
+---
+layout: post
+status: publish
+published: true
+title: 那些年玩前端遇到的坑们（四）&mdash;&mdash;两则safari遇到的坑
+author:
+  display_name: nisiyu
+  login: nisiyu
+  email: nisiyu91@sina.com
+  url: ''
+author_login: nisiyu
+author_email: nisiyu91@sina.com
+wordpress_id: 175
+wordpress_url: http://45.32.35.73/wordpress/?p=175
+date: '2017-03-11 04:06:34 +0800'
+date_gmt: '2017-03-11 04:06:34 +0800'
+categories:
+- Uncategorized
+tags: []
+comments: []
+---
+<p>&nbsp;</p>
+<ol>
+<li>overflow scroll的问题，</li>
+</ol>
+<p>这次我想做一个手机端上方导航的滚动条。我便定义了个固定宽度的容器，然后设置了一个overflow-x:scroll的属性。</p>
+<p>后来这个滚动条仔安卓手机上是完全没问题的，但是iOS上是有问题的。</p>
+<p>搜索了一下stackoverflow的帖子，上面说iOS上的safari是没有滚动条的，所以 scroll是没用的，会无法滚动，用了auto便可以了。</p>
+<p>这一点就让我非常疑惑，像mdn这样的文档里肯定会说，overflow里面的不同属性是干什么的，但是像浏览器中不一样的细节真是让人叫苦，因为用iOS Safari的设备十分多，也不会有本书或者官方的参考告诉大家 overflow scroll这个属性其实是没用的。这也是书上不足的地方，一定要实践才会走过的弯路</p>
+<p>2. 用js取css，css中的字符串会被safari处理</p>
+<p>我在网页中做了一个lightbox的组件。当点击画面中的一些容器，会展示一张图的原图。</p>
+<p>原容器中写了这样的css</p>
+<p>background-image: url("path/to/image");</p>
+<p>为了格式统一，我都设定了url的括号中有引号</p>
+<p>lightbox本身只有一个容器，里面有个img标签，当点击画面中容器后，显示lightbox并且把img标签的src置为path/to/image</p>
+<p>所以我就找到这个元素用jquery想取出url，用正则表达式取里面的内容。</p>
+<p>var matchobj = $el.css("background-image").match(/^url\(\"(.*)\"\)$/);</p>
+<p>var matchurl = matchobj[1];</p>
+<p>在chrome浏览器中这样写是没问题的，但是在safari浏览器中会报错，无法取一个null对象的下标为1的内容。</p>
+<p>我alert了一下$el.css("background-image")，才发现在Safari 浏览器中渲染时，字符串被修改了。得出的字符串是url(path/to/image)，引号被删除了。</p>
+<p>虽然修改正则表达式也能解决，但我觉得用正则来match css中的字符串不是一个好方式，所以就新定义了个属性，data-lightbox="path/to/url"，在js中通过attr去取，这样可以避免字符串进行处理的问题，而且应该更加快速一点。</p>

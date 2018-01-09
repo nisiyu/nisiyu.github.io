@@ -1,0 +1,46 @@
+---
+layout: post
+status: publish
+published: true
+title: 那些年玩前端遇到的坑们（二）</script>有着尊贵至高的身份，标签中定义字符串要小心。
+author:
+  display_name: nisiyu
+  login: nisiyu
+  email: nisiyu91@sina.com
+  url: ''
+author_login: nisiyu
+author_email: nisiyu91@sina.com
+wordpress_id: 122
+wordpress_url: http://45.32.35.73/wordpress/?p=122
+date: '2016-10-08 16:23:25 +0800'
+date_gmt: '2016-10-08 16:23:25 +0800'
+categories:
+- Uncategorized
+tags: []
+comments: []
+---
+<p>公司的产品是一个建站工具，可以用它搭建电商网站，自然建站工具里面会出现很多的表单。我们都知道表单验证后，一般来说输入要校验，输出要编码，来维持数据的合法性。</p>
+<p>现在我们的产品会读取用户的输入，将其作为一个javascript的字符串的变量的一部分，例如我们的代码中就会出现这样的代码段：<br />
+<code><br />
+<script><br />
+var data = "userinput";<br />
+</script><br />
+</code></p>
+<p>其中userinput是一个用户输入的字符串，<strong>初想觉得</strong>只要将字符串得到合适的转义，例如"转为\"，<strong>直接将用户输入转为一个字符串即可</strong>。</p>
+<ul>
+<li>问题现象</li>
+</ul>
+<p>然而，发生了意外，当我输入一些字符串进去时发现页面异常了，控制台也报出了很多错误。排查原因，发现是<strong>因为字符串中有</script></strong>。可以输入载荷</script><script>alert(1);</script>造成页面存储型xss。</p>
+<p>到如今，这个问题已经和转不转义没有关系了，甚至和javascript也关系不大，而在于浏览器的html引擎在读取到字符串中的</script>，直接闭合了script标签，没有继续读下去将其作为一个字符串。</p>
+<ul>
+<li></script>为什么那么特殊？</li>
+</ul>
+<p>初看觉得不可思议，但是仔细想想是非常合理的，浏览器读取了一串html，会要将已知的javascript代码读取出来用javascript引擎做处理，就要提取所有script标签，因此</script>标签解析的优先级非常高，根本等不到javascript引擎去分析整个字符串。</p>
+<ul>
+<li>解决方法</li>
+</ul>
+<p>有趣的是，这问题只出现于html中，所以我们用script标签引用外部文件时，不会出现问题，字符串中可以包含有 </script>这样的字符串。</p>
+<p>但我们需要动态地写字符串在这个html中，所以不能引用外部文件。最终我们选择的方案是将用户输入先做一层base64编码，然后在script标签中执行base64解码函数，还原出用户输入字符串，这样就可以避免硬写包含</script>字符串，但字符串的值又可以含有</script>不会使标签内容被截断。</p>
+<p>还有一个坑就是，不要转成JSON字符串，出现中文有可能出现不支持的情况，不要问我怎么知道的。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

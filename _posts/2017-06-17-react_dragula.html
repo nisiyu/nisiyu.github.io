@@ -1,0 +1,52 @@
+---
+layout: post
+status: publish
+published: true
+title: 那些年前端遇到的坑们（五）&mdash;&mdash;拖动排序：react和dragula的小秘密，维持数据的顺序
+author:
+  display_name: nisiyu
+  login: nisiyu
+  email: nisiyu91@sina.com
+  url: ''
+author_login: nisiyu
+author_email: nisiyu91@sina.com
+wordpress_id: 179
+wordpress_url: http://45.32.35.73/wordpress/?p=179
+date: '2017-06-17 07:04:52 +0800'
+date_gmt: '2017-06-17 07:04:52 +0800'
+categories:
+- Uncategorized
+tags: []
+comments: []
+---
+<p>最近我除了做模版也在做一些可改进的部分，也做了些更有挑战的内容。感觉收获不少，公司的建站工具属于主打产品，最近也修改了很多其中的代码，学习了一些关于react的小技能。</p>
+<p>最近想做一个&ldquo;拖动调整板块顺序&rdquo;的特性，看到前辈写过一段代码是可以给导航菜单拖动排序的，准备学习一下移植到建站工具的页面板块中来。</p>
+<p>0x00 背景说明</p>
+<p>建站工具是一项有些的技术，我司的产品中是在建站工具项目中插入一个iframe，iframe中运行着客户网站的项目，能够和react的项目通信。</p>
+<p><img class="alignnone size-full wp-image-180" src="http://45.32.35.73/wordpress/wp-content/uploads/2017/05/WechatIMG95.jpeg" alt="WechatIMG95" width="6660" height="2244" /></p>
+<p>左侧预览窗口是网站前端的项目，右侧的设置栏是建站工具的项目，它们互相进行通信，通过通信的消息类型和数据回调，保持配置数据和网页前端样式的同步。</p>
+<p>假设网页前端项目叫做Front 建站工具项目叫做Editor，这个特性的流程可以说是这么样的：</p>
+<ol>
+<li>在右侧拖动一张卡片，原来顺序是m，拖动到n。</li>
+<li>Editor计算好新的板块顺序的数据，发送给Front。</li>
+<li>Front收到消息后保存了这段数据，重新渲染iframe里的页面，顺序发生改变。</li>
+<li>Front刷新页面后会给Editor发送数据，Editor根据Front的数据来更新卡片顺序（项目以这个前提运行，这段不能不运行）</li>
+</ol>
+<p>卡片顺序必须缓存着，这样可以快速保存。<br />
+在这里我们选用了react-dragula插件，该插件会生成一个decorator，将一个容器以ref和这个decorator绑定，就可以使这个容器下的子元素变得可以拖动并排序。decorator本身有很多支持的特性，插件的具体用法可以在<a href="https://github.com/bevacqua/dragula">https://github.com/bevacqua/dragula</a>和<a href="https://github.com/bevacqua/react-dragula">https://github.com/bevacqua/react-dragula</a>查看更多</p>
+<p>0x01 问题</p>
+<p>预想流程如下：</p>
+<ol>
+<li>使用拖动插件拖动</li>
+<li>监听drop事件，根据drag位置和drop位置计算新的顺序存进缓存</li>
+<li>读取缓存中的内容用react中setData的方式刷新页面</li>
+</ol>
+<p>问题来了，我每次拖动修改顺序后，会跳变两次，<br />
+一次是插件本身的顺序调整，<br />
+还有一次是修改数据引起的调整。</p>
+<p>查看了数据以后，发现数据没有错，更新的数据顺序对了，但是显示的是错的，那就说明react-dragula这个插件本身会保存一个状态，这个状态可能是做过的拖动操作后形成的一个新排序和旧排序的映射。</p>
+<p>然后怎么改都觉得不太成功，于是看了看项目的issue，看了很多，找到了<a href="https://github.com/bevacqua/dragula/issues/188">https://github.com/bevacqua/dragula/issues/188</a></p>
+<p>这篇文章的标题写的是Option to not move or clone，正是我所想的&ldquo;保留数据，但是摒弃新排序和旧排序的映射&rdquo;，但是作者似乎并没有加这个option，但我从下面找到了react的解决办法，每次drop时重新计算顺序，再改变插件中的状态。不过评论说，在数据量多的时候也许有性能问题，我们的板块最多十来个，所以我就使用了这套方案。</p>
+<p><a href="https://github.com/bevacqua/dragula/issues/188#issuecomment-206762598">https://github.com/bevacqua/dragula/issues/188#issuecomment-206762598</a></p>
+<p>后面我自己的解决和业务太相关就不说了。<br />
+也算是一次比较愉快地通过看issue解决问题地经历～分享一下。</p>

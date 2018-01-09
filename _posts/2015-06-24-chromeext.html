@@ -1,0 +1,47 @@
+---
+layout: post
+status: publish
+published: true
+title: Chrome插件学习小心得
+author:
+  display_name: nisiyu
+  login: nisiyu
+  email: nisiyu91@sina.com
+  url: ''
+author_login: nisiyu
+author_email: nisiyu91@sina.com
+wordpress_id: 39
+wordpress_url: http://198.56.183.237/?p=39
+date: '2015-06-24 16:12:57 +0800'
+date_gmt: '2015-06-24 16:12:57 +0800'
+categories:
+- Uncategorized
+tags: []
+comments: []
+---
+<p><strong>0x00 &nbsp;前言</strong></p>
+<p>话说我厂有很多非常不合理的电子系统，来提(jiang)高(di)员工的工作效率。</p>
+<p>有个电子系统，我们每周都要填报一些东西，不填可能还会影响奖金，尽管有些人会提醒，但以为自己之前填了结果没填就还是跪了。。。</p>
+<p>本着不断改(hua)进(shui)的念头，我用了一些上班时间，写了个chrome的插件，功能非常简单：可以定时刷新自己目前有没有填写这个表，以前一直没学过，这回稍稍学习了一下chrome插件的开发方法。</p>
+<p>因为我厂的信息安全策略，显然我是不可能有代码的。分享一些关于插件开发的经验，找点栗子来举。</p>
+<p><strong>0x01 Start!</strong></p>
+<p>同样的，在学习一样东西时，我想先看官方文档，然后再找找有没有中文，拿点栗子来学习学习。不过谷歌官方的文档不出意外地。。。墙了。</p>
+<p>不过搜了些博客稍微了解了以后，发现有个360的插件扩展开发文档，正好是用来开发chrome插件的，因为他的所谓的&rdquo;极速浏览器&ldquo;其实就是chrome的内核，文档还不错，还是中文的，上手比较快。</p>
+<p><a href="http://open.chrome.360.cn/extension_dev/overview.html">http://open.chrome.360.cn/extension_dev/overview.html</a></p>
+<p><strong>0x02 功能：查询显示状态</strong></p>
+<p>我在公司做的插件是做查询状态的工作，基本思路如下：</p>
+<p>定时访问一个页面->查看其中内容的状态->回显在插件的图标上</p>
+<p>一个插件必须要有一个manifest文件，做一些全局的配置；一些html+js文件，用来实现插件想要的逻辑；还可选有一些资源文件如图片等来丰富页面效果的内容。</p>
+<p>在这里也是将360那个文档稍作一个二次消化，文档中也有一些chrome官方的例子可以下载。</p>
+<p>&nbsp;</p>
+<p><strong>0x03 跨域</strong></p>
+<p>因为background页面的域是在本地的，如果想从background页面上通过javasccript提交请求到你想要的页面，例如我们想要查询的是一个微博好友，其域就在weibo.com上。浏览器默认是不会允许这样的跨域访问的。(使用js的XMLHttpRequest跨域有点像CSRF攻击，设计上不允许)</p>
+<p>这时候就需要给插件去申请权限，让其能够访问某地址内容的权限，这样就可以使用跨域访问了。</p>
+<p>相应的，安装插件时就会提醒&ldquo;这个插件将被允许在什么url上进行操作"，是不是有点像Android系统装应用时询问是否允许某项权限一样？哈哈，谷歌设计这两个东西的思路是一样的。</p>
+<p>因此，在使用chrome时尽量使用chrome应用商店的插件，不要信任来路不明的插件，需要看看允许访问的url有哪些。打开开发者模式安装不是自己开发的插件是具有很大风险的。当然，如果这个插件的源码全都被吃透了，确保没有问题，那才可以使用。</p>
+<p><strong>0x04 浏览器存储</strong></p>
+<p>因为是个状态查询的插件，所以有可能需要浏览器开的时候才起作用，有的时候周期并不会很长，而且也不是时时刻刻都保存着一个合法的会话cookie。所以我想让关掉的时候储存之前查询的日期和状态，好在chrome支持HTML5的LocalStorage属性。</p>
+<p>原理也十分简单，就是存储在浏览器文件里了，每一次的浏览器打开都会重新载入之前序列化后的localStorage，这样就可以避免被消除。</p>
+<p><strong>0x05 未探索的content script</strong></p>
+<p>因为做查询插件没有做content script，这一部分功能相当强大，就是可以生成一些&ldquo;钓鱼网页&rdquo;，在原网页loading完后跟着执行content script，这样就可以按照开发者想要的方式来改变页面原来的呈现形态，包括执行任意的js脚本。</p>
+<p>这个功能可以用来优化一些浏览时的体验，比如以前大家在大学时期，选课系统总会做得稀烂，点进去才发现已经没名额了，这时候嵌入了一些脚本执行一些异步调用，马上将还有名额的课程显示在页面上。就是用的这个原理了。</p>

@@ -1,0 +1,52 @@
+---
+layout: post
+status: publish
+published: true
+title: 那些年玩前端遇到的坑们（三）&mdash;&mdash;video不是你想加，想加就能加，腾讯爸爸我错了。
+author:
+  display_name: nisiyu
+  login: nisiyu
+  email: nisiyu91@sina.com
+  url: ''
+author_login: nisiyu
+author_email: nisiyu91@sina.com
+wordpress_id: 137
+wordpress_url: http://45.32.35.73/wordpress/?p=137
+date: '2017-01-12 17:28:12 +0800'
+date_gmt: '2017-01-12 17:28:12 +0800'
+categories:
+- Uncategorized
+tags: []
+comments: []
+---
+<p>0x00 引入视频</p>
+<p>我们的客户经常会问我们需要加视频，之前并没有用html5做过视频的内容，所以练习了那么一下下。具体的文档呢，可以通过mdn查看。</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video">https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video</a></p>
+<p>html5中的视频，可以通过一个video 标签来引入</p>
+<pre><code class="html"><video  src="your_video_url" preload="" autoplay="autoplay" loop="loop" controls="controls"></video>
+</code></pre>
+<p>用这个引入视频后，在电脑上比较正常的浏览器，只要不是上古时代的，基本都可以播放。</p>
+<p>并且根据属性填写，</p>
+<p>autoplay支持自动播放</p>
+<p>loop支持循环播放</p>
+<p>controls表示支持下方出现panel可以控制视频播放暂停空降。</p>
+<p>0x01 查看效果</p>
+<p>电脑上不出所料的是好的。</p>
+<p>在安卓的微信上出现了一个蛋疼的问题，视频的z-index永远是最高的，会遮盖住webapp中的工具栏，无论如何调整dom中元素的z-index，都没用，永远在最上。</p>
+<p>去查了下腾讯官方的信息</p>
+<p><img class="alignnone size-full wp-image-154" src="http://45.32.35.73/wordpress/wp-content/uploads/2017/01/剪贴板_2016-12-20_18-24.png" alt="剪贴板_2016-12-20_18-24" width="1404" height="316" /></p>
+<p>而且腾讯在上面的独立播放器中也会加入一些私货。。。播放器也会推腾讯自己的广告。。。</p>
+<p>还有一个比较普遍的问题是video标签中设置成autoplay时，在手机端不会自动播放，当然这点很正常，可以防止手机上偷跑流量。</p>
+<p>0x03 解决方式</p>
+<p>安卓的微信上浏览器只能用play函数控制播放，这样会打开一个全屏的播放器。所以在微信端可以判断一下隐藏video标签，显示一个视频的缩略图。点击缩略图调用这个play函数就可以了。千万不能都显示。</p>
+<p><a href="http://faconparfums.heidianer.com/products/TIGEDELUMIRE">http://faconparfums.heidianer.com/products/TIGEDELUMIRE</a>/</p>
+<p>可以参考以上的页面，代码可以如下</p>
+<p>&nbsp;</p>
+<pre><code class="javascript">if (isWeixin()) {
+ } else {
+ $(".video-wrapper").removeClass('small--hidden');
+ $(".img").addClass('small--hidden');
+ }
+ $(".img, img").on('click', function(){$("video")[0].play();});
+</code></pre>
+<p>&nbsp;</p>

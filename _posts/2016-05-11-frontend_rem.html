@@ -1,0 +1,66 @@
+---
+layout: post
+status: publish
+published: true
+title: 移动端前端学习&mdash;&mdash;关于rem还有chrome 12px以下字体的问题
+author:
+  display_name: nisiyu
+  login: nisiyu
+  email: nisiyu91@sina.com
+  url: ''
+author_login: nisiyu
+author_email: nisiyu91@sina.com
+wordpress_id: 92
+wordpress_url: http://45.32.35.73/wordpress/?p=92
+date: '2016-05-11 15:50:54 +0800'
+date_gmt: '2016-05-11 15:50:54 +0800'
+categories:
+- Uncategorized
+tags:
+- front-end
+- rem
+- 12px
+comments: []
+---
+<p>之前出国了三个星期工作，感觉自己的&ldquo;正事&rdquo;都没有好好干，原先写了点前端的作业，还好在笔记本里面记了点东西，在这里做点回顾，稍微写点儿东西，希望有人正好看到能够得到有些帮助。</p>
+<p>这回是我第一次接触到移动端的前端，并且做了一个小任务，在几天内设定了个deadline，时间还是很紧的。然后我就邀请我的好朋友圣神给我来点突击进修，圣神答曰：rem很重要，于是我就去学习学习了用rem来自适应。</p>
+<p>首先，我先来讲讲rem和px，可以说pixel是我们最经常见到的一个尺寸单位，是一个固定的单位，相对于显示器的分辨率大小来确定，所以设备打开浏览器时窗口已经有了固定的一个px大小的宽度和高度。</p>
+<p>em是一个相对的单位，它可以相对于它的父元素计算大小，如一个父元素中字体大小为10px，则子元素中如写的是2em，则就会计算为10*2=20px。</p>
+<p>rem与em更有不同，所有的子孙元素全都以根元素为相对尺寸计算大小，如果用于自适应不同设备的大小的话，就十分方便：只需要修改根元素的size大小，则全部以rem为单位的大小就会自适应的按比例放大缩小。</p>
+<p><strong>这样的话，只要根据设备的尺寸来调整根元素的字体大小，就可以自适应屏幕尺寸了。</strong></p>
+<p>于是我便从网上找了一个js查询屏幕宽度来自适应的代码并修改:</p>
+<pre>(function(win) {
+    var doc = win.document;
+    var docEl = doc.documentElement;
+    var tid;
+
+    function refreshRem() {
+        var width = docEl.getBoundingClientRect().width;
+        if (width > 640) {
+            width = 640;
+        }
+        var rem = width / 6.4;
+        docEl.style.fontSize = rem + 'px';
+    }
+
+    win.addEventListener('resize', function() {
+        clearTimeout(tid);
+        tid = setTimeout(refreshRem, 300);
+    }, false);
+    win.addEventListener('pageshow', function(e) {
+        if (e.persisted) {
+            clearTimeout(tid);
+            tid = setTimeout(refreshRem, 300);
+        }
+    }, false);
+
+    refreshRem();
+
+})(window);</pre>
+<p>&nbsp;</p>
+<p>获取documentElement记在docEl变量中。使用getBundingClientRect().width获取设备宽度，判断是否大于640，以640px作为最大值，如果小于640px时，将width/6.4作为一个rem赋值到根元素的字体大小。因为设计图是640px宽度的，所以这样计算起来比较方便，例如20px的大小，就可以标注为0.2rem。</p>
+<p>请注意，这个6.4原来不是6.4，原来我设置了64。因为想这样的话，数字会比较整。但是后来就发现了坑，<strong>我用chrome调试器在小屏幕下，字体和形状会变得很大，溢出整个空间。</strong></p>
+<p>假如宽度是480px，所以根元素中的字体大小为480/64=7.5px。</p>
+<p>然后，神奇的事情发生了，我观察调试器中的字，居然是12px。为什么算错了？</p>
+<p>后来我想起来之前看一些面试题的时候，其中有一个知识点是chrome默认只能渲染12px及以上字体，需要加入一些代码来hack才能低于12px字体。我当时还在想，这个知识点好没用啊，小于12px的字体根本不常用嘛！结果居然没过多久就收flag了。chrome<strong>里小于12px的字体都会计算成12px，所以根元素的字体大小增大了。</strong></p>
+<p>因此我将这个系数从64转为6.4，这样能够保证能够算出大于12px大小的字体。</p>

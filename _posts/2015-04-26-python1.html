@@ -1,0 +1,88 @@
+---
+layout: post
+status: publish
+published: true
+title: python官方文档阅读笔记[1] 字符串的format 正则表达式
+author:
+  display_name: nisiyu
+  login: nisiyu
+  email: nisiyu91@sina.com
+  url: ''
+author_login: nisiyu
+author_email: nisiyu91@sina.com
+wordpress_id: 28
+wordpress_url: http://198.56.183.237/?p=28
+date: '2015-04-26 14:50:26 +0800'
+date_gmt: '2015-04-26 14:50:26 +0800'
+categories:
+- Uncategorized
+tags:
+- python
+- regex capturing
+- string format
+comments:
+- id: 4
+  author: jiaqi
+  author_email: nijiaqi2006@sina.com
+  author_url: http://www.nijiaqi.com
+  date: '2015-05-13 04:46:31 +0800'
+  date_gmt: '2015-05-13 04:46:31 +0800'
+  content: 写的不错，学习了~
+---
+<p>目前读到standard library 关于字符串和正则的部分，这一期主要讲述一下python中的字符串format和正则，我认为是较为精华的部分。如果只是对那些知识进行罗列，或者直接拷贝，那我觉得是违背一个博客的初衷的。我将官方文档的内容进行了一小点的二次加工，所以可能会有问题，也请看官看到的能够指正，谢谢。</p>
+<p>看的是2.7版，链接 如果需要看正解，务必以官方文档为准。</p>
+<p><a href="https://docs.python.org/2.7/library/strings.html">https://docs.python.org/2.7/library/strings.html</a></p>
+<p>以下主要我会讲解冷门的例子中的一些解释，注重一下实践中的学习：</p>
+<ul>
+<li>字符串的format各进制的整数的输出的例子</li>
+</ul>
+<p>[code lang="python"]<br />
+>>> width = 5<br />
+>>> for num in range(5,12):<br />
+...     for base in 'dXob':<br />
+...         print '{0:{width}{base}}'.format(num, base=base, width=width),<br />
+...     print<br />
+...<br />
+    5     5     5   101<br />
+    6     6     6   110<br />
+    7     7     7   111<br />
+    8     8    10  1000<br />
+    9     9    11  1001<br />
+   10     A    12  1010<br />
+   11     B    13  1011<br />
+[/code]</p>
+<p>解释一下，使用带大括号的字符串使用string的format方法，每一个大括号的元素将会对应format中的参数。</p>
+<p>0就会对应num width对应width base对应base<br />
+width永远是5，表示每次的输出字符串有5的宽度，使这些内容能够输出成表格形式，且默认右对齐。</p>
+<p>如果有嵌套的大括号，其实就可以认为是一个不断迭代解开括号的过程，以第一行第一列为例，字符串即为'5:{width}{base}'.format(base ='d', width = 5) 也就是5以有符号整数形式输出。其余的X为以16进制输出，o则是以八进制输出，b则是以二进制输出。</p>
+<ul>
+<li>正则表达式 capturing与non-capturing</li>
+</ul>
+<p>正则表达式是一个伟大的发明，在文字处理时，可以做到使用一个很短的正则表达式表达一个复杂的逻辑来进行搜索、替换、匹配的操作，在编译过程中进行词法分析就经常可以用到正则表达式的一个方式。</p>
+<p>python作为一个脚本语言，标准库中对操作字符串处理的正则表达式自然是十分强大而且方便，学习这一方面主要是2点，第1点是正则表达式的语法，想必这是每个程序员或者hacker的基本功，不仅适用于python，还适用于任何其他的变成语言和工具。第2点就是python的相关API的使用。</p>
+<p>按照惯例贴上官方文档的链接，请以官方文档为准<br />
+<a href="https://docs.python.org/2.7/library/re.html">https://docs.python.org/2.7/library/re.html</a></p>
+<p>最简单的[]的用法，{,}的用法，|的用法，常用的后加个字母代表的意义也就不说了，今天主要讲讲capturing和non-capturing<br />
+使用(...)括起来的在很多情况下可以作为一个捕获型的子匹配，会将这个子匹配存在内存中，在这之后可以用num来引用这个匹配的字符串表示将这个字符串再重复一遍，达到一个动态变化的作用，可以用于如XML的标签的匹配上，而且还可以在Python使用时使用match对象中的group来对(...)中的内容进行提取。</p>
+<p>但是在(?:...)这种写法中，这个正则表达式不会保存括号中的内容进行下一次匹配。</p>
+<p>举个例子：<br />
+下列第一行中，abc标签用def闭合（不符合XML的语法，但是举例子），在匹配1时，会匹配捕获到的abc的内容，所以第一行中没有匹配上<br />
+第二行中abc标签闭合能与abc完美的符合。<br />
+第三行中，因为?:开始的字符串匹配不会进行存储，所以正则表达式匹配时在内存中根本没有1这个元素，所以造成了异常。<br />
+[code lang="python"]<br />
+>>> re.match(r'<(abc|def)>.*</1>','<abc>content</def>')<br />
+>>> re.match(r'<(abc|def)>.*</1>','<abc>content</abc>')<br />
+<_sre.SRE_Match object at 0x0000000002A00288><br />
+>>> re.match(r'<(?:abc|def)>.*</1>','<abc>content</def>')</p>
+<p>Traceback (most recent call last):<br />
+  File "
+<pyshell#22>", line 1, in <module><br />
+    re.match(r'<(?:abc|def)>.*</1>','<abc>content</def>')<br />
+  File "E:DevelopingPythonlibre.py", line 137, in match<br />
+    return _compile(pattern, flags).match(string)<br />
+  File "E:DevelopingPythonlibre.py", line 242, in _compile<br />
+    raise error, v # invalid expression<br />
+error: bogus escape: '\1'<br />
+[/code]</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
